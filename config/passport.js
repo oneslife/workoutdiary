@@ -36,5 +36,5 @@ module.exports = function (app, passport) {
 //	passport.use('twitter', twitter(app, passport));
 //	passport.use('google', google(app, passport));
 	console.log('3가지 passport 인증방식 설정됨.');
-	
+// test	
 };

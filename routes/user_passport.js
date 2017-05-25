@@ -18,9 +18,9 @@ module.exports = function(app, passport) {
 		console.dir(req.user);
 			
 		if (req.user == undefined) {
-			res.render('index.ejs', {login_success:false});    // 로그인 하지 않았을 때 홈 페이지  
+			res.render('index.ejs', {login_success:false});
 		} else {
-			res.render('index2.ejs', {login_success:true});     // 로그인 했을 때 홈 페이지 
+			res.render('index.ejs', {login_success:true});
 		}
 	});
 

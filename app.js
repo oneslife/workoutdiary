@@ -23,16 +23,20 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var expressErrorHandler = require('express-error-handler');
 
-//========  Passport 사용 ==================//
+
+//===== Passport 사용 =====//
 var passport = require('passport');
 var flash = require('connect-flash');
+
 
 //===== Express 서버 객체 만들기 =====//
 var app = express();
 
-//===== 뷰 엔진 설정 =============//
+
+//===== 뷰 엔진 설정 =====//
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
 
 
 //===== 서버 변수 설정 및 static으로 public 폴더 설정  =====//
@@ -51,10 +55,13 @@ app.use(expressSession({
 	saveUninitialized:true
 }));
 
-//======= passport 사용 설정 =============//
+
+//===== Passport 사용 설정 =====//
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+
 
 //===== 라우터 미들웨어 사용 =====//
 app.use(app.router);
@@ -62,13 +69,15 @@ app.use(app.router);
 //라우팅 정보를 읽어들여 라우팅 설정
 route_loader.init(app);
 
-//===== Passport 관련 라우팅 및 설정 =========//
+
+
+//===== Passport 관련 라우팅 및 설정 =====//
 
 // 패스포트 설정
 var configPassport = require('./config/passport');
 configPassport(app, passport);
 
-// 패스포트 관련 함수 라우팅
+//패스포트 관련 함수 라우팅
 var userPassport = require('./routes/user_passport');
 userPassport(app, passport);
 
@@ -84,6 +93,7 @@ var isLoggedIn = function(req, res, next) {
 	res.redirect('/');
 }
 */
+
 
 //===== 404 에러 페이지 처리 =====//
 var errorHandler = expressErrorHandler({
@@ -120,7 +130,8 @@ app.on('close', function () {
 });
 
 // 시작된 서버 객체를 리턴받도록 합니다. 
-var server = http.createServer(app).listen(app.get('port'), function(){
+// 포트 정보 수정
+var server = http.createServer(app).listen(process.env.OPENSHIFT_NODEJS_PORT ||app.get('port'), function(){
 	console.log('서버가 시작되었습니다. 포트 : ' + app.get('port'));
 
 	// 데이터베이스 초기화

@@ -12,15 +12,19 @@ Schema.createSchema = function(mongoose) {
 	
 	// 스키마 정의
 	var UserSchema = mongoose.Schema({
-	    email : {type: String, 'default': ''}
-	    , hashed_password : {type: String, 'default':''}
-	    , salt : {type:String}
-	    , name : {type: String, index: 'hashed', 'default':''}
-	    , created_at : {type: Date, index: {unique: false}, 'default': Date.now}
-	    , updated_at : {type: Date, index: {unique: false}, 'default': Date.now}
-	    , provider : {type: String, 'default' : ''}
-	    , authToken : {type: String, 'default': ''}
-	    , facebook : {}
+		email: {type: String, 'default':''}
+	    , hashed_password: {type: String, 'default':''}
+	    , name: {type: String, index: 'hashed', 'default':''}
+	    , salt: {type:String}
+	    , created_at: {type: Date, index: {unique: false}, 'default': Date.now}
+	    , updated_at: {type: Date, index: {unique: false}, 'default': Date.now} 
+	    , provider: {type: String, 'default':''}
+	    , authToken: {type: String, 'default':''}
+	    , facebook: {}
+	    , twitter: {}
+	    , github: {}
+	    , google: {}
+	    , linkedin: {}
 	});
 	
 	// password를 virtual 메소드로 정의 : MongoDB에 저장되지 않는 편리한 속성임. 특정 속성을 지정하고 set, get 메소드를 정의함
@@ -60,8 +64,9 @@ Schema.createSchema = function(mongoose) {
 		}
 	});
 	
+
 	UserSchema.method('checkValidation', function() {
-		return (this.provider == '');
+	    return (this.provider == '');
 	});
 	
 	// 값이 유효한지 확인하는 함수 정의
@@ -84,7 +89,7 @@ Schema.createSchema = function(mongoose) {
 	UserSchema.path('email').validate(function (email) {
 		if (!this.checkValidation()) return true;
 		return email.length;
-	}, 'email 칼럼의 값이 없습니다');
+	}, 'email 칼럼의 값이 없습니다.');
 	
 	UserSchema.path('hashed_password').validate(function (hashed_password) {
 		if (!this.checkValidation()) return true;
@@ -103,13 +108,15 @@ Schema.createSchema = function(mongoose) {
 	
 	UserSchema.static('load', function(options, callback) {
 		options.select = options.select || 'name';
-		this.findOne(options.criteria)
-			.select(options.select)
-			.exec(callback);
+	    this.findOne(options.criteria)
+	      .select(options.select)
+	      .exec(callback);
 	});
 	
-	//모델을 위한 스키마 등록
+	
+	// 모델을 위한 스키마 등록
 	mongoose.model('User', UserSchema);
+	
 	
 	console.log('UserSchema 정의함.');
 

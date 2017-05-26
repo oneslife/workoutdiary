@@ -5,7 +5,8 @@
 
 module.exports = {
 	server_port: 3000,
-	db_url: 'mongodb://test01:test01db@ds133450.mlab.com:33450/board',
+//	db_url: 'mongodb://localhost:27017/shopping',
+    db_url: 'mongodb://test01:test01db@ds133450.mlab.com:33450/board',
 	db_schemas: [
 	    {file:'./user_schema', collection:'users', schemaName:'UserSchema', modelName:'UserModel'}
 	    ,{file:'./post_schema', collection:'post', schemaName:'PostSchema', modelName:'PostModel'}
@@ -15,7 +16,8 @@ module.exports = {
         ,{file:'./post', path:'/process/showpost/:id', method:'showpost', type:'get'}
         ,{file:'./post', path:'/process/listpost', method:'listpost', type:'post'}
         ,{file:'./post', path:'/process/listpost', method:'listpost', type:'get'}
-	],
+	]  
+   // ,
 /*
  	facebook: {		// passport facebook
 		clientID: '1442860336022433',

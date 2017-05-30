@@ -13,18 +13,29 @@ var Entities = require('html-entities').AllHtmlEntities;
 var addpost = function(req, res) {
 	console.log('post 모듈 안에 있는 addpost 호출됨.');
 
-	var paramTitle = req.param('title');
-	var paramContents = req.param('contents');
-	var paramWriter = req.param('writer');
+    var paramTitle = req.body.title || req.query.title;
+    var paramContents = req.body.contents || req.query.contents;
+    var paramWriter = req.body.writer || req.query.writer;
+
+	console.log('요청 파라미터 : ' + paramTitle + ', ' + paramContents + ', ' + paramWriter);
 	
 	var database = req.app.get('database');
 	
-	
+	// 데이터베이스 객체가 초기화된 경우	
 	if (database.db) {
 		
 		// 1. 아이디를 이용해 사용자 검색
 		database.UserModel.findByEmail(paramWriter, function(err, results) {
-			if (err) { throw err; }
+			if (err) {
+                console.error('게시판 글 추가 중 에러 발생 : ' + err.stack);
+                
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h2>게시판 글 추가 중 에러 발생</h2>');
+                res.write('<p>' + err.stack + '</p>');
+				res.end();
+                
+                return;
+            }
 
 			if (results == undefined || results.length < 1) {
 				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
@@ -46,13 +57,23 @@ var addpost = function(req, res) {
 			});
 
 			post.savePost(function(err, result) {
-				if (err) { throw err; }
+				if (err) {
+                    if (err) {
+                        console.error('응답 웹문서 생성 중 에러 발생 : ' + err.stack);
+
+                        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                        res.write('<h2>응답 웹문서 생성 중 에러 발생</h2>');
+                        res.write('<p>' + err.stack + '</p>');
+                        res.end();
+
+                        return;
+                    }
+                }
 				
 			    console.log("글 데이터 추가함.");
 			    console.log('글 작성', '포스팅 글을 생성했습니다. : ' + post._id);
 			    
 			    return res.redirect('/process/showpost/' + post._id); 
-			    //return res.redirect('/process/showpost/1'); 
 			});
 			
 		});
@@ -68,11 +89,14 @@ var addpost = function(req, res) {
 var listpost = function(req, res) {
 	console.log('post 모듈 안에 있는 listpost 호출됨.');
  
-	var paramPage = req.param('page');
-	var paramPerPage = req.param('perPage');
+    var paramPage = req.body.page || req.query.page;
+    var paramPerPage = req.body.perPage || req.query.perPage;
 	
+    console.log('요청 파라미터 : ' + paramPage + ', ' + paramPerPage);
+    
 	var database = req.app.get('database');
 	
+    // 데이터베이스 객체가 초기화된 경우
 	if (database.db) {
 		// 1. 글 리스트
 		var options = {
@@ -81,7 +105,16 @@ var listpost = function(req, res) {
 		}
 		
 		database.PostModel.list(options, function(err, results) {
-			if (err) { throw err; }
+			if (err) {
+                console.error('게시판 글 목록 조회 중 에러 발생 : ' + err.stack);
+                
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h2>게시판 글 목록 조회 중 에러 발생</h2>');
+                res.write('<p>' + err.stack + '</p>');
+				res.end();
+                
+                return;
+            }
 			
 			if (results) {
 				console.dir(results);
@@ -103,9 +136,19 @@ var listpost = function(req, res) {
 					};
 					
 					req.app.render('listpost', context, function(err, html) {
+                        if (err) {
+                            console.error('응답 웹문서 생성 중 에러 발생 : ' + err.stack);
+
+                            res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                            res.write('<h2>응답 웹문서 생성 중 에러 발생</h2>');
+                            res.write('<p>' + err.stack + '</p>');
+                            res.end();
+
+                            return;
+                        }
+                        
 						res.end(html);
-					});
-					
+					});		
 				});
 				
 			} else {
@@ -126,19 +169,45 @@ var listpost = function(req, res) {
 var showpost = function(req, res) {
 	console.log('post 모듈 안에 있는 showpost 호출됨.');
  
-	var paramId = req.param('id');		// 글 ID
-	console.log('전달받은 id : ' + paramId);
+    // URL 파라미터로 전달됨
+    var paramId = req.body.id || req.query.id || req.params.id;
+	
+    console.log('요청 파라미터 : ' + paramId);
 	
 	var database = req.app.get('database');
 	
 	if (database.db) {
 		// 1. 글 리스트
 		database.PostModel.load(paramId, function(err, results) {
-			if (err) { throw err; }
+			if (err) {
+                console.error('게시판 글 조회 중 에러 발생 : ' + err.stack);
+                
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h2>게시판 글 조회 중 에러 발생</h2>');
+                res.write('<p>' + err.stack + '</p>');
+				res.end();
+                
+                return;
+            }
 			
 			if (results) {
 				console.dir(results);
   
+                // 조회수 업데이트
+                console.log('trying to update hits.');
+                
+                database.PostModel.incrHits(results._doc._id, function(err2, results2) {
+                    console.log('incrHits executed.');
+                    
+                    if (err2) {
+                        console.log('incrHits 실행 중 에러 발생.');
+                        console.dir(err2);
+                        return;
+                    }
+                    
+                });
+                
+
 				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 				
 				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
@@ -149,7 +218,16 @@ var showpost = function(req, res) {
 				};
 				
 				req.app.render('showpost', context, function(err, html) {
-					if (err) { throw err; }
+					if (err) {
+                        console.error('응답 웹문서 생성 중 에러 발생 : ' + err.stack);
+                
+                        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                        res.write('<h2>응답 웹문서 생성 중 에러 발생</h2>');
+                        res.write('<p>' + err.stack + '</p>');
+                        res.end();
+
+                        return;
+                    }
 					
 					console.log('응답 웹문서 : ' + html);
 					res.end(html);

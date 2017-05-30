@@ -47,8 +47,8 @@
 		</style>
 		
 		
-		<script src="/public/jquery-2.1.4.min.js"></script>
-		<script src="/public/semantic.min.js"></script>
+		<script src="../public/jquery-2.1.4.min.js"></script>
+		<script src="../public/semantic.min.js"></script>
 		
 		<script>
 			function listpost(page, perPage) {
@@ -86,6 +86,7 @@
 								   var curTitle = posts[i]._doc.title;
 								   var curContents = posts[i]._doc.contents;
 								   var curWriter = posts[i]._doc.writer.email;
+                                   var curHits = posts[i]._doc.hits;    
 								   var curNo = noStart - i;
 								   %>
 								    <div class="item">
@@ -99,7 +100,7 @@
 											      	<h5 class="ui right aligned orange header">
 											      			<%=curWriter %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											        		2015-06-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											        		12
+											        		<%=curHits %>
 											      	</h5>
 												</div>
 						    				</div>
@@ -184,8 +185,8 @@
 					 	</div>
 						 	  
 						<br><br>
-						<a class="ui button" href='/process/listpost?page=0&perPage=2'>재요청</a>
-						<a class="ui button" href='/public/addpost.html'>글쓰기</a>
+						<a class="ui button" href='../process/listpost?page=0&perPage=2'>재요청</a>
+						<a class="ui button" href='../public/addpost.html'>글쓰기</a>
 					
 					</div>
 				</div>

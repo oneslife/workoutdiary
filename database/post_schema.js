@@ -13,15 +13,16 @@ SchemaObj.createSchema = function(mongoose) {
 	
 	// 글 스키마 정의
 	var PostSchema = mongoose.Schema({
-	    title: {type: String, trim: true, 'default':''},		// 글 제목
-	    contents: {type: String, trim:true, 'default':''},						// 글 내용
-	    writer: {type: mongoose.Schema.ObjectId, ref: 'users'},							// 글쓴 사람
-	    comments: [{		// 댓글
-	    	contents: {type: String, trim:true, 'default': ''},					// 댓글 내용
-	    	writer: {type: mongoose.Schema.ObjectId, ref: 'users'},
+	    title: {type: String, trim: true, 'default':''},		          // 글 제목
+	    contents: {type: String, trim:true, 'default':''},			      // 글 내용
+	    writer: {type: mongoose.Schema.ObjectId, ref: 'users'},			  // 글쓴 사람
+	    comments: [{		                                              // 댓글
+	    	contents: {type: String, trim:true, 'default': ''},			  // 댓글 내용
+	    	writer: {type: mongoose.Schema.ObjectId, ref: 'users'},   
 	    	created_at: {type: Date, 'default': Date.now}
 	    }],
 	    tags: {type: [], 'default': ''},
+	    hits: {type: Number, 'default': 0},                                //  조회수
 	    created_at: {type: Date, index: {unique: false}, 'default': Date.now},
 	    updated_at: {type: Date, index: {unique: false}, 'default': Date.now}
 	});
@@ -78,7 +79,14 @@ SchemaObj.createSchema = function(mongoose) {
 				.limit(options.perPage)
 				.skip(options.perPage * options.page)
 				.exec(callback);
-		}
+		},
+        incrHits: function(id, callback) {
+            var query = {_id: id};
+            var update = {$inc: {hits:1}};
+            var options = {upsert:true, 'new':true, setDefaultsOnInsert:true};
+            
+            this.findOneAndUpdate(query, update, options, callback);            
+        }		
 	}
 	
 	console.log('PostSchema 정의함.');

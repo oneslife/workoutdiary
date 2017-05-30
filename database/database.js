@@ -1,10 +1,14 @@
 
 /*
- * database
+ * 데이터베이스 스키마 로딩
+ * 
  */
 
-var mongodb = require('mongodb');
+// 덧글 var mongodb = require('mongodb');
+
 var mongoose = require('mongoose');
+
+// 덧글 mongoose.Promise = require('bluebird');
 
 // database 객체에 db, schema, model 모두 추가
 var database = {};
@@ -20,6 +24,7 @@ function connect(app, config) {
 	console.log('connect() 호출됨.');
 
 	// 데이터베이스 연결 : config의 설정 사용
+	mongoose.Promise = global.Promise;  // mongoose의 Promise 객체는 global의 Promise 객체 사용하도록 함
 	mongoose.connect(config.db_url);
 	database.db = mongoose.connection;
 	

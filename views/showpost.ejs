@@ -59,7 +59,7 @@
 		</style>
 		
 		<script src="../public/jquery-2.1.4.min.js"></script>
-		<script src="../public/semantic.min.css"></script>
+		<script src="../public/semantic.min.js"></script>
 		<script src="../public/cleditor/jquery.cleditor.min.js"></script>
 		
 		<script>
@@ -89,6 +89,7 @@
 						   var curTitle = posts._doc.title;
 						   var curContents = posts._doc.contents;
 						   var curWriter = posts._doc.writer.email; 
+                           var curId = posts._doc._id; 
 						  
 						   // html-entities module is required in post.js
 						   var entities = new Entities();
@@ -113,6 +114,27 @@
 					
 				</div>
 				
+                <div>
+                    <form class="content ui form" method="post" action="/process/addcomment">
+						<div class="field">
+				    		<label>댓글</label>
+				    		<input type="text" name="contents" placeholder="댓글내용 입력">
+				  		</div>		
+								
+						<div class="two fields">
+				    		<div class="field">
+				      			<label>작성자</label>
+								<input type="text" name="writer" placeholder="댓글작성자 입력">
+							</div>
+							<div class="field"></div>
+						</div>
+								 
+                        <input hidden type="text" name="id" value="<%=curId %>">
+                        
+						<input class="ui submit button" type="submit" value="댓글 추가" name="" />
+					</form>
+                </div>
+                
 				<br><br><a class="ui button" href='/process/listpost?page=0&perPage=2'>글 목록</a>
 				
 			</div>

@@ -76,7 +76,7 @@ SchemaObj.createSchema = function(mongoose) {
 			this.find(criteria)
 				.populate('writer', 'name provider email')
 				.sort({'created_at': -1})
-				.limit(2) //options.perPage)
+				.limit(5) //options.perPage)
 				.skip(options.perPage * options.page)
 				.exec(callback);
 		},

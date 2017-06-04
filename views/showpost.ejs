@@ -58,7 +58,7 @@
 	  
 		</style>
 		
-		<script src="../public/jquery-2.1.4.min.js"></script>
+		<script src="../public/jquery-3.1.1.min.js"></script>
 		<script src="../public/semantic.min.js"></script>
 		<script src="../public/cleditor/jquery.cleditor.min.js"></script>
 		
@@ -114,6 +114,33 @@
 					
 				</div>
 				
+
+                <div class="ui very relaxed selection celled list">
+                    <%  
+                        for (var i = 0; i < posts._doc.comments.length; i++) {
+                           var curCommentContents = posts._doc.comments[i].contents;
+                           var curCommentWriter = posts._doc.comments[i].writer;
+                           %>
+                            <div class="item">
+                                <div class="ui grid">
+                                    <div class="sixteen wide column">
+                                        <div class="ui header">
+                                            <h4 class="ui left aligned header">
+                                                <%=curCommentContents %>
+                                            </h4>
+                                            <h5 class="ui right aligned orange header">
+                                                <%=curCommentWriter %>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    <% } %>	
+
+                </div>
+
+                
+                
                 <div>
                     <form class="content ui form" method="post" action="/process/addcomment">
 						<div class="field">
@@ -143,4 +170,5 @@
 			
 	</body>
 </html>
+
 

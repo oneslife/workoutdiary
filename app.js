@@ -11,13 +11,17 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-// 미들웨어 불러오기
+// Express 미들웨어 불러오기
 var bodyParser = require('body-parser')
   , cookieParser = require('cookie-parser')
   , static = require('serve-static')
-  , expressSession = require('express-session')
-  , errorHandler = require('errorhandler')
-  , expressErrorHandler = require('express-error-handler');
+  , errorHandler = require('errorhandler');
+
+//  에러 핸들러 모듈 사
+var expressErrorHandler = require('express-error-handler');
+
+// Session  미들웨어 불러오기
+var expressSession = require('express-session');
 
 //===== Passport 사용 =====//
 var passport = require('passport');
@@ -33,7 +37,6 @@ var database = require('./database/database');
 var route_loader = require('./routes/route_loader');
 
 
-
 //===== Express 서버 객체 만들기 =====//
 var app = express();
 
@@ -44,7 +47,6 @@ app.set('view engine', 'ejs');
 console.log('뷰 엔진이 ejs로 설정되었습니다');
 
 
-
 //===== 서버 변수 설정 및 static으로 public 폴더 설정  =====//
 console.log('config.server_port : %d', config.server_port);
 app.set('port',process.env.PORT || 3000);
@@ -53,7 +55,7 @@ app.set('port',process.env.PORT || 3000);
 app.use('/public', static(path.join(__dirname, 'public')));
 
 // body-parser를 이용해 application/x-www-form-urlencoded 파싱
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // body-parser를 이용해 application/json 파싱
 app.use(bodyParser.json());

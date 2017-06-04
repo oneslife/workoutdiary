@@ -1,5 +1,5 @@
 /**
- * 데이터베이스 스키마 & 모델
+ * 게시판을 위한 데이터베이스 스키마 정의하는 모
  * 
  * PostSchema 객체
  * 게시판 글에 대한 Schema
@@ -18,7 +18,7 @@ SchemaObj.createSchema = function(mongoose) {
 	    writer: {type: mongoose.Schema.ObjectId, ref: 'users'},			  // 글쓴 사람
 	    comments: [{		                                              // 댓글
 	    	contents: {type: String, trim:true, 'default': ''},			  // 댓글 내용
-	    	writer: {type: mongoose.Schema.ObjectId, ref: 'users'},   
+	    	writer: {type: String, trim:true, 'default': ''},      //{type: mongoose.Schema.ObjectId, ref: 'users'},   
 	    	created_at: {type: Date, 'default': Date.now}
 	    }],
 	    tags: {type: [], 'default': ''},
@@ -62,8 +62,7 @@ SchemaObj.createSchema = function(mongoose) {
 		}
 	}
 	
-	PostSchema.statics = {
-		// ID로 글 찾기
+	PostSchema.statics = {          		// ID로 글 찾기
 		load: function(id, callback) {
 			this.findOne({_id: id})
 				.populate('writer', 'name provider email')
@@ -76,8 +75,8 @@ SchemaObj.createSchema = function(mongoose) {
 			this.find(criteria)
 				.populate('writer', 'name provider email')
 				.sort({'created_at': -1})
-				.limit(5) //options.perPage)
-				.skip(options.perPage * options.page)
+				.limit(Number(options.perPage))
+ 				.skip(options.perPage * options.page)
 				.exec(callback);
 		},
         incrHits: function(id, callback) {

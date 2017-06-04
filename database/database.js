@@ -4,15 +4,16 @@
  * 
  */
 
-// 덧글 var mongodb = require('mongodb');
 
 var mongoose = require('mongoose');
 
-// 덧글 mongoose.Promise = require('bluebird');
+// var mongodb = require('mongodb');
+// mongoose.Promise = require('bluebird');
 
 // database 객체에 db, schema, model 모두 추가
 var database = {};
 
+// 초기화를 위해 호출하는 함
 database.init = function(app, config) {
 	console.log('init() 호출됨.');
 	
@@ -36,8 +37,8 @@ function connect(app, config) {
 		createSchema(app, config);
 		
 	});
+	
 	database.db.on('disconnected', connect);
-
 }
 
 // config에 정의된 스키마 및 모델 객체 생성

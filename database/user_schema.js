@@ -1,6 +1,5 @@
 /**
- * 모듈에 대해 알아보기
- * 
+ *  
  * UserSchema 객체를 모듈로 만들기
  */
 
@@ -27,7 +26,8 @@ Schema.createSchema = function(mongoose) {
 	    , linkedin: {}
 	});
 	
-	// password를 virtual 메소드로 정의 : MongoDB에 저장되지 않는 편리한 속성임. 특정 속성을 지정하고 set, get 메소드를 정의함
+	// password를 virtual 메소드로 정의 
+	// : MongoDB에 저장되지 않는 편리한 속성임. 특정 속성을 지정하고 set, get 메소드를 정의함
 	UserSchema
 	  .virtual('password')
 	  .set(function(password) {
@@ -116,7 +116,6 @@ Schema.createSchema = function(mongoose) {
 	
 	// 모델을 위한 스키마 등록
 	mongoose.model('User', UserSchema);
-	
 	
 	console.log('UserSchema 정의함.');
 

@@ -73,7 +73,7 @@ module.exports = function(router, passport) {
 
     // 로그인 인증
     router.route('/login').post(passport.authenticate('local-login', {
-        successRedirect : '/profile', 
+        successRedirect : '/listpost', //profile', 
         failureRedirect : '/login', 
         failureFlash : true 
     }));

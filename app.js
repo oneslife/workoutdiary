@@ -24,8 +24,8 @@ var expressErrorHandler = require('express-error-handler');
 var expressSession = require('express-session');
 
 //===== Passport 사용 =====//
-var passport = require('passport');
-var flash = require('connect-flash');
+var passport = require('passport');     // 사용자 인증 처리에 필요한 기본 기능 제공
+var flash = require('connect-flash');   // 요청 객체에 메시지를 넣어 둘 수 있는 기능 제공
 
 // 모듈로 분리한 설정 파일 불러오기
 var config = require('./config/config');

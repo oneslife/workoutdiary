@@ -22,7 +22,7 @@ module.exports = function(router, passport) {
             res.render('index.ejs', {login_success:false});
         } else {
             console.log('사용자 인증된 상태임.');
-            res.render('index.ejs', {login_success:true});
+            res.render('listpost.ejs', {login_success:true});
         }
     });
     
@@ -73,7 +73,7 @@ module.exports = function(router, passport) {
 
     // 로그인 인증
     router.route('/login').post(passport.authenticate('local-login', {
-        successRedirect : '/listpost', //profile', 
+        successRedirect : '/profile', 
         failureRedirect : '/login', 
         failureFlash : true 
     }));
@@ -85,6 +85,7 @@ module.exports = function(router, passport) {
         failureFlash : true 
     }));
 
+/*
     // 패스포트 - 페이스북 인증 라우팅 
     router.route('/auth/facebook').get(passport.authenticate('facebook', { 
         scope : 'email' 
@@ -95,5 +96,6 @@ module.exports = function(router, passport) {
         successRedirect : '/profile',
         failureRedirect : '/'
     }));
+*/
 
 };

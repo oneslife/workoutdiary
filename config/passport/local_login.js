@@ -1,10 +1,14 @@
 
 /*
- * Passport - Local 설정
+ * Passport - Local 설정 및 인증 처리 함수 
+ *
+ * 소스 그래로 사용하면 됨 - jason.L
  */
 
 var LocalStrategy = require('passport-local').Strategy;
 
+
+//패스포트 로그인 설정 
 module.exports = new LocalStrategy({
 	usernameField : 'email',
 	passwordField : 'password',

@@ -17,8 +17,11 @@ module.exports = {
         ,{file:'./post', path:'/process/listpost', method:'listpost', type:'post'}
         ,{file:'./post', path:'/process/listpost', method:'listpost', type:'get'}
 	]  
-   // ,
-/*
+
+
+/*  차후에 적용 예정  jason.L
+
+    ,
  	facebook: {		// passport facebook
 		clientID: '1442860336022433',
 		clientSecret: '13a40d84eb35f9f071b8f09de10ee734',
@@ -34,5 +37,6 @@ module.exports = {
 		clientSecret: 'secret',
 		callbackURL: '/auth/google/callback'
 	}
-	*/
+*/
+
 }

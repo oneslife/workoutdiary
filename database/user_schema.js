@@ -97,6 +97,7 @@ Schema.createSchema = function(mongoose) {
 	}, 'hashed_password 칼럼의 값이 없습니다.');
 	
 	   
+	// 모델 객체에서 메소드를 사용할 수 있도록
 	// 스키마에 static 메소드 추가
 	UserSchema.static('findByEmail', function(email, callback) {
 		return this.find({email:email}, callback);
